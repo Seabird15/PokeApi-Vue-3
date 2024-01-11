@@ -10,7 +10,7 @@ defineProps({
 <template>
   <div class="container w-4/6">
     <div class="w-full py-7">
-      <h1 class="text-blue-500 text-3xl uppercase font-bold tracking-wider">
+      <h1 class="text-3xl font-bold tracking-wider text-blue-500 uppercase">
         {{ msg }}
       </h1>
       <h3>

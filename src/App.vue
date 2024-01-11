@@ -5,7 +5,7 @@ import HelloWorld from "./components/HelloWorld.vue";
 
 <template>
   <header>
-    <div class="w-full flex justify-center mt-7">
+    <div class="flex flex-col justify-center w-full md:flex-row mt-7">
       <img
         alt="Vue logo"
         class="logo"
@@ -13,21 +13,43 @@ import HelloWorld from "./components/HelloWorld.vue";
       />
 
       <div>
-        <HelloWorld msg="PokeApi" />
+        <HelloWorld
+          msg="PokeApi"
+          class="m-auto text-center md:m-0 md:text-left"
+        />
 
-        <nav class="bg-gray-100">
-          <RouterLink to="/">Home</RouterLink>
-          <RouterLink to="/about">About</RouterLink>
-          <RouterLink to="/pokemons">Pokemons</RouterLink>
+        <nav>
+          <RouterLink class="!p-4 bg-gray-100" to="/">Home</RouterLink>
+          <RouterLink class="!p-4 bg-gray-100" to="/about">About</RouterLink>
+          <RouterLink class="!p-4 bg-gray-100" to="/pokemons"
+            >Pokemons</RouterLink
+          >
         </nav>
       </div>
     </div>
   </header>
 
   <RouterView />
+  <hr />
+  <footer class="text-center my-7">By Daniela L. Aravena</footer>
 </template>
 
 <style scoped>
+.active {
+  background: rgb(78, 163, 210);
+  background: linear-gradient(
+    16deg,
+    rgba(78, 163, 210, 1) 0%,
+    rgba(25, 85, 233, 1) 100%
+  );
+  color: white !important;
+  padding: 12px;
+  border-radius: 8px;
+  transition: all;
+}
+.active:hover {
+  background-color: blue !important;
+}
 header {
   line-height: 1.5;
   max-height: 100vh;
@@ -47,10 +69,6 @@ nav {
 
 nav a.router-link-exact-active {
   color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
 }
 
 nav a {
