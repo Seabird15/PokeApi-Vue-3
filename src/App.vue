@@ -1,28 +1,31 @@
 <script setup>
 import { RouterLink, RouterView } from "vue-router";
 import HelloWorld from "./components/HelloWorld.vue";
+import HomeView from "./views/HomeView.vue";
 </script>
+
 
 <template>
   <header>
-    <div class="flex flex-col justify-center w-full md:flex-row mt-7">
-      <img
-        alt="Vue logo"
-        class="logo"
-        src="@/assets/pokemon-logo-png-1446.png"
-      />
-
+    <div
+      class="flex flex-col justify-center w-full bg-gradient-to-b from-blue-500 to-transparent md:flex-row py-7"
+    >
       <div>
-        <HelloWorld
-          msg="PokeApi"
-          class="m-auto text-center md:m-0 md:text-left"
-        />
+        <div class="flex justify-center">
+          <HelloWorld
+            msg="PokeApi"
+            class="m-auto text-center md:m-0 md:text-left"
+          />
+        </div>
 
-        <nav>
+        <nav class="flex justify-center mx-auto">
           <RouterLink class="!p-4 bg-gray-100" to="/">Home</RouterLink>
           <RouterLink class="!p-4 bg-gray-100" to="/about">About</RouterLink>
           <RouterLink class="!p-4 bg-gray-100" to="/pokemons"
             >Pokemons</RouterLink
+          >
+          <RouterLink class="!p-4 bg-gray-100" to="/favoritos"
+            >Favoritos</RouterLink
           >
         </nav>
       </div>
@@ -30,8 +33,7 @@ import HelloWorld from "./components/HelloWorld.vue";
   </header>
 
   <RouterView />
-  <hr />
-  <footer class="text-center my-7">By Daniela L. Aravena</footer>
+  <footer class="text-center text-white my-7">By Daniela L. Aravena</footer>
 </template>
 
 <style scoped>

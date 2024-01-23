@@ -1,37 +1,44 @@
 <script setup>
-import axios from "axios";
 import { useRoute, useRouter } from "vue-router";
-import { ref } from "vue";
+
+import { useGetData } from "@/composables/getData";
+
+import { useFavoritoStore } from "@/store/favoritos";
+
 //Poder consumir los params en el script
 const route = useRoute();
 //Empujar al usuario directamente en el script
 const router = useRouter();
+const useFavoritos = useFavoritoStore();
 
-const poke = ref({});
+const { add, findPoke } = useFavoritos;
+
+const { data, getData, loading, error } = useGetData();
+
 //Loading
-const loading = ref(true);
 
 const back = () => {
   router.push("/pokemons");
 };
 
-const getData = async () => {
-  try {
-    const { data } = await axios.get(
-      `https://pokeapi.co/api/v2/pokemon/${route.params.name}`
-    );
-    poke.value = data;
-    console.log(poke);
-  } catch (error) {
-    console.log(error);
-    poke.value = null;
-  } finally {
-    setTimeout(() => {
-      loading.value = false;
-    }, 2000);
-  }
-};
-getData();
+getData(`https://pokeapi.co/api/v2/pokemon/${route.params.name}`);
+
+// const getData = async () => {
+//   try {
+//     const { data } = await axios.get(
+//       `https://pokeapi.co/api/v2/pokemon/${route.params.name}`
+//     );
+//     poke.value = data;
+//     console.log(poke);
+//   } catch (error) {
+//     console.log(error);
+//     poke.value = null;
+//   } finally {
+//     setTimeout(() => {
+//       loading.value = false;
+//     }, 2000);
+//   }
+// };
 </script>
 
 <template>
@@ -39,7 +46,7 @@ getData();
     class="flex p-4 mx-4 border-2 border-solid md:m-auto md:my-7 md:w-3/6 mt-7"
   >
     <div v-show="loading" class="mx-auto">
-      <div role="status" v-show="poke !== null">
+      <div role="status" v-show="data !== null">
         <svg
           aria-hidden="true"
           class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
@@ -60,17 +67,28 @@ getData();
       </div>
     </div>
 
-    <div class="m-auto" v-show="!loading" v-if="poke">
+    <div class="m-auto" v-show="!loading" v-if="data">
       <div class="">
         <h2 class="text-3xl font-bold tracking-widest uppercase">
-          Poke Name: <span class="text-blue-500">{{ poke.name }}</span>
+          Poke Name: <span class="text-blue-500">{{ data.name }}</span>
         </h2>
         <h2 class="text-3xl font-bold tracking-widest uppercase">
-          Weight: <span class="text-blue-500">{{ poke.weight }}</span>
+          Weight: <span class="text-blue-500">{{ data.weight }}</span>
         </h2>
+        <button
+          :disabled="findPoke(data.name)"
+          @click="add(data)"
+          class="p-2 mt-2 text-xs text-white transition-all bg-green-600 rounded-full hover:shadow-2xl hover:bg-green-700 disabled:bg-green-300 disabled:cursor-not-allowed"
+        >
+          Agregar Favoritos
+        </button>
       </div>
       <div>
-        <img :src="poke.sprites?.front_default" alt="" class="w-full" />
+        <img
+          :src="data.sprites?.other.dream_world.front_default"
+          alt=""
+          class="w-[50%] h-[50%] mx-auto my-7"
+        />
       </div>
       <button
         class="p-2 transition-all border-2 border-gray-100 border-solid rounded-md hover:bg-green-700 hover:text-white hover:shadow-md"
@@ -79,8 +97,12 @@ getData();
         &lt; Volver a la lista
       </button>
     </div>
-    <div v-else>
-      <h1>No existe el Pokemón</h1>
+    <div v-else class="mx-auto">
+      <h1
+        class="p-4 font-bold tracking-wider text-red-700 uppercase bg-red-400 rounded-md px-7 bg-opacity-70"
+      >
+        {{ error }}
+      </h1>
     </div>
   </section>
 </template>
